@@ -17,12 +17,16 @@ def graph_to_dict(G):
     l = {node: set(attached) for node, attached in zip(nodes, neighbours)}
     return l
 
-def dfs(G, start, called):
+def dfs(G, start, called = set(), fired_edges = []):
     called.add(start)
     for neighbour in G[start]:
+        print(1)
         if neighbour not in called:
+            fired_edges.append((str(start), str(neighbour)))
+            fired_edges.append((str(neighbour), str(start)))
             dfs(G, neighbour, called)
-            return called
+    return fired_edges
+
 
 file = open('graph.txt', 'r')
 
@@ -30,9 +34,10 @@ file = open('graph.txt', 'r')
 graph = read_graph()
 pos = nx.spring_layout(graph)
 print(graph_to_dict(graph))
-print(dfs(graph_to_dict(graph), 0, set()))
+fired = dfs(graph_to_dict(graph), 0)
 
 nx.draw_networkx_nodes(graph, pos)
+nx.draw_networkx_edges(graph, pos, [edge for edge in nx.edges(graph) if edge in fired], edge_color='red', width=4.0, alpha=0.5)
 nx.draw_networkx_edges(graph, pos)
 nx.draw_networkx_labels(graph, pos, font_size=12)
 plt.savefig('graph.png')
