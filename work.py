@@ -52,6 +52,16 @@ def dijkstra(G, start):
 def shortest_one_another(G, node1, node2):
     return dijkstra(G, node1)[node2]
 
+'''def shortest_path(G, node1, node2, path = [], called = set()):
+    called.add(node2)
+    searched_node = node2
+    for neighbour in nx.all_neighbors(G, node2):
+        if dijkstra(G, node1)[node2] - dijkstra(G, node1)[neighbour] == G[node2][neighbour].get('length') and neighbour not in called:
+            searched_node = neighbour
+    path.append((node2, searched_node))
+    shortest_path(G, node1, searched_node)
+    return (path)''' #FIXMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
 def draw_graph(G, pos, name = 'graph.png', color = 'black'):
     lbl = {}
     for x in G:
@@ -83,6 +93,8 @@ for node in graph:
 print('Enter two nodes:', end=' ')
 nds = input().split()
 print('Shortest path from ' + nds[0] + ' to ' + nds[1] + ' is ' + str(shortest_one_another(graph, nds[0], nds[1])))
+
+#print(shortest_path(graph, '2', '4'))
 
 file.close()
 
