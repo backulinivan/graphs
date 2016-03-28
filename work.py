@@ -52,10 +52,11 @@ def dijkstra(G, start):
     return (shortest_paths, shortest_from)
 
 def shortest_one_another(G, node1, node2):
+    shortest_from = dijkstra(G, node1)[1]
     path = []
-    while dijkstra(G, node1)[1][int(node2)] != -1:
-        path.append((node2, dijkstra(G, node1)[1][int(node2)]))
-        node2 = dijkstra(G, node1)[1][int(node2)]
+    while shortest_from[int(node2)] != -1:
+        path.append((node2, shortest_from[int(node2)]))
+        node2 = shortest_from[int(node2)]
     return path
 
 '''def shortest_path(G, node1, node2, path = [], called = set()):
