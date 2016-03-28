@@ -40,6 +40,7 @@ def dijkstra(G, start):
     shortest_paths = {node:float('+inf') for node in G}
     shortest_paths[str(start)] = 0
     queue = [str(start)]
+    shortest_from = [-1]*len(nx.nodes(G))
     while len(queue) != 0:
         current = queue.pop(0)
         for neighbour in G[current]:
@@ -47,10 +48,15 @@ def dijkstra(G, start):
             if offered_path < shortest_paths[neighbour]:
                 shortest_paths[neighbour] = offered_path
                 queue.append(neighbour)
-    return shortest_paths
+                shortest_from[int(neighbour)] = current
+    return (shortest_paths, shortest_from)
 
 def shortest_one_another(G, node1, node2):
-    return dijkstra(G, node1)[node2]
+    path = []
+    while dijkstra(G, node1)[1][int(node2)] != -1:
+        path.append((node2, dijkstra(G, node1)[1][int(node2)]))
+        node2 = dijkstra(G, node1)[1][int(node2)]
+    return path
 
 '''def shortest_path(G, node1, node2, path = [], called = set()):
     called.add(node2)
@@ -87,7 +93,7 @@ graph = read_graph()
 position = nx.spring_layout(graph)
 depth = dfs(graph, str_node)
 breadth = bfs(graph, str_node)
-optimal_paths = dijkstra(graph, str_node)
+optimal_paths = dijkstra(graph, str_node)[0]
 
 print('Shortest paths from ' + str_node + ':')
 for node in graph:
@@ -95,7 +101,7 @@ for node in graph:
 
 print('Enter two nodes:', end=' ')
 nds = input().split()
-print('Shortest path from ' + nds[0] + ' to ' + nds[1] + ' is ' + str(shortest_one_another(graph, nds[0], nds[1])))
+highlight = shortest_one_another(graph, nds[0], nds[1])
 
 #print(shortest_path(graph, '2', '4'))
 
@@ -104,6 +110,7 @@ file.close()
 plt.subplot(1, 3, 1)
 plt.title('Graph')
 draw_graph(graph, position)
+nx.draw_networkx_edges(graph, position, highlight, edge_color='green', alpha=0.5, width=4.0)
 plt.subplot(1, 3, 2)
 plt.title('DFS result from ' + str_node)
 draw_graph(depth, position, 'dfs_graph.png', color='red')
