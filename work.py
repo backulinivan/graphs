@@ -59,19 +59,6 @@ def shortest_one_another(G, node1, node2):
         node2 = shortest_from[int(node2)]
     return path
 
-'''def shortest_path(G, node1, node2, path = [], called = set()):
-    called.add(node2)
-    searched_node = node2
-    for neighbour in nx.all_neighbors(G, node2):
-        if dijkstra(G, node1)[node2] - dijkstra(G, node1)[neighbour] == G[node2][neighbour].get('length') and neighbour not in called:
-            searched_node = neighbour
-    path.append((node2, searched_node))
-    if searched_node == node1:
-        return (path)
-    else:
-        shortest_path(G, node1, searched_node)'''
- #FIXMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-
 def draw_graph(G, pos, name = 'graph.png', color = 'black'):
     lbl = {}
     for x in G:
